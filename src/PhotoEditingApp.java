@@ -3,13 +3,22 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class PhotoEditingApp {
 
     public static void main(String[] args) {
-        String imagePath = "./pictures/dog-image.jpeg";
-        File dogImageFile = new File(imagePath);
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Type the absolute path of the Photo you want to edit, or only press Enter to take the default picture: ");
+        String imagePath = scanner.nextLine();
 
+        if (imagePath == null || imagePath.isBlank()) {
+            imagePath = "./pictures/dog-image.jpeg";
+        }
+
+        System.out.println("Editing the picture...");
+
+        File dogImageFile = new File(imagePath);
         BufferedImage dogImageBlackAndWhite = null;
 
         try {
