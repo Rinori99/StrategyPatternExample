@@ -13,15 +13,14 @@ public class PhotoEditingApp {
             imagePath = DEFAULT_IMAGE_PATH;
         }
 
-        System.out.println("Press 1 for Black&White or press 2 for Vertical Flip: ");
+        System.out.println("Press 1 for Black&White, press 2 for Vertical Flip, or press 3 for increasing Contrast: ");
         String editingOption = scanner.nextLine();
 
-        if (editingOption.equals("1")) {
-            Editor.editPhoto(imagePath, new BlackAndWhiteEdit());
-        } else if (editingOption.equals("2")) {
-            Editor.editPhoto(imagePath, new VerticalFlipEdit());
-        } else {
-            System.out.println("Wrong input!");
+        switch (editingOption) {
+            case "1" -> Editor.editPhoto(imagePath, new BlackAndWhiteEdit());
+            case "2" -> Editor.editPhoto(imagePath, new VerticalFlipEdit());
+            case "3" -> Editor.editPhoto(imagePath, new ContrastEdit());
+            default -> System.out.println("Wrong input!");
         }
     }
 }
