@@ -16,25 +16,34 @@ public class PhotoEditingApp {
             imagePath = "./pictures/dog-image.jpeg";
         }
 
-        System.out.println("Editing the picture...");
-
-        File dogImageFile = new File(imagePath);
-        BufferedImage dogImageBlackAndWhite = null;
+        BufferedImage dogImageEdited = null;
+        System.out.println("Press 1 for Black&White or press 2 for Vertical Flip: ");
+        String editingOption = scanner.nextLine();
 
         try {
+            File dogImageFile = new File(imagePath);
             BufferedImage dogImage = ImageIO.read(dogImageFile);
-            dogImageBlackAndWhite = applyBlackAndWhiteFilterToImage(dogImage);
 
+            if (editingOption.equals("1")) {
+                dogImageEdited = applyBlackAndWhiteFilterToImage(dogImage);
+            } else if (editingOption.equals("2")) {
+                dogImageEdited = flipImage(dogImage);
+            } else {
+                System.out.println("Wrong input!");
+            }
         } catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
         }
 
         try {
-            File outputFile = new File("./edited-pictures/dog-image-black-and-white.png");
+            String editedPhotoFileName = editingOption.equals("1") ? "dog-image-black-and-white" : "dog-image-flipped";
 
-            if (dogImageBlackAndWhite != null) {
-                ImageIO.write(dogImageBlackAndWhite, "png", outputFile);
-                System.out.println("Edited the photo to black and white successfully");
+            File outputFile = new File("./edited-pictures/" + editedPhotoFileName + ".png");
+
+            if (dogImageEdited != null) {
+                ImageIO.write(dogImageEdited, "png", outputFile);
+                String editingType = editingOption.equals("1") ? "Black&White" : "vertical flip";
+                System.out.println("Edited the photo to " + editingType + " successfully");
             }
         } catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
@@ -63,5 +72,23 @@ public class PhotoEditingApp {
         }
 
         return blackAndWhiteImage;
+    }
+
+    private static BufferedImage flipImage(BufferedImage image) {
+        int height = image.getHeight();
+        int width = image.getWidth();
+
+        BufferedImage flippedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int originalRGB = image.getRGB(x, y);
+
+                int inverseY = height - y - 1;
+                flippedImage.setRGB(x, inverseY, originalRGB);
+            }
+        }
+
+        return flippedImage;
     }
 }
